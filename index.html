@@ -33,9 +33,8 @@
           <h2>Shopping Cart</h2>
           <ul>
             <li class="cart-item" v-for="item in cart">
-              <div class="item-title">
-                {{ item.title }}
-              </div>
+              <div class="item-title">{{ item.title }}</div>
+              <span class="item-qtty">{{ item.qtty }}</span>
             </li>
           </ul>
           <div v-if="cart.length">

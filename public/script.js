@@ -8,21 +8,49 @@ new Vue({
   data: {
     total: 0,
     items: [
-      { title: "Title 1" },
-      { title: "Title 2" },
-      { title: "Title 3" },
-      { title: "Title 4" }
+      { 
+        id: 1,
+        title: "Title 1" },
+      { 
+        id: 2,
+        title: "Title 2" },
+      { 
+        id: 3,
+        title: "Title 3" },
+      { 
+        id: 4,
+        title: "Title 4" }
     ],
     cart: []
   },
   methods: {
-    // Context: this is being triggered onClick 
-    addItem: function(index) {
+    // Context: this method is being triggered onClick 
+    addItem (index) {
       // Action 1: Accumulate the total value of item added to cart
       this.total += 11;
-      // Action 2: Add the chosen "item object" into the cart
-      // cart will have an array of items object
-      this.cart.push(this.items[index]);
+
+      // Action 2: Add the chosen "item object" into the cart. It shouldnt add another of the "same item" if it's already there. 
+      // It should increment the quantity of that item in the cart
+      // This is a reference variable
+      const item = this.items[index];
+      let found = false;
+      
+      for (let i = 0; i < this.cart.length; i++) {
+        // Check for duplicated item based on id and flag found to 'true' if it's a non-existing item
+        if (this.cart[i].id === item.id) {
+          found = true;
+          this.cart[i].qtty++;
+        }
+      }
+
+      // Only add item to cart if it's not already there
+      if (!found) {
+        this.cart.push({
+          id: item.id,
+          title: item.title,
+          qtty: 1
+        });
+      }
     }
   }
 });
