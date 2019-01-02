@@ -38,8 +38,11 @@
               </div>
             </li>
           </ul>
-          <div>
+          <div v-if="cart.length">
             <div>Current total: {{ total }}</div>
+          </div>
+          <div class="cart-empty" v-else>
+            No items in the cart yet.
           </div>
         </div>
       </div>
