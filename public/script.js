@@ -9,21 +9,9 @@ new Vue({
   el: "#app",
   data: {
     total: 0,
-    items: [
-      { 
-        id: 1,
-        title: "Title 1" },
-      { 
-        id: 2,
-        title: "Title 2" },
-      { 
-        id: 3,
-        title: "Title 3" },
-      { 
-        id: 4,
-        title: "Title 4" }
-    ],
-    cart: []
+    items: [],
+    cart: [],
+    search: ''
   },
   methods: {
     // Context: this method is being triggered onClick 
@@ -72,11 +60,26 @@ new Vue({
         for (let i = 0; i < this.cart.length; i++) {
           if (this.cart[i].id === item.id) {
             // Remove the item from the cart by 1. This is the logic to handle the UI when quantity of item reaches or less than 0
+            // TODO: read on: splice()
             this.cart.splice(i, 1);
             break;
           }
         }
       }
+    },
+    onSubmit() {
+      // Interact with this endpoint: '/search/:query'
+      // this returns a Promise: https://github.com/pagekit/vue-resource/blob/develop/docs/http.md
+      this.$http
+        .get('/search/'.concat(this.search))
+        .then(response => {
+        // success callback
+        // when queries are made, the titles and ids are obtained from imgUrl API >> and we'll be adding them to "items'"
+        // this example can work because we are accessing the same JSON properties like "title", "id"
+        this.items = response.data;
+      }, response => {
+        // error callback
+      });
     }
   },
   filters: {
