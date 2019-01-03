@@ -58,10 +58,13 @@
               <button class="btn" @click="dec(item)">-</button>
             </li>
           </ul>
-          <div v-if="cart.length">
-            <div>Current total: {{ total | currency }}</div>
-          </div>
-          <div class="cart-empty" v-else>
+          <transition name="fade">
+              <div v-if="cart.length">
+                  <div>Current total: {{ total | currency }}</div>
+                </div>
+          </transition>
+          
+          <div class="cart-empty" v-if="cart.length === 0">
             No items in the cart yet.
           </div>
         </div>
