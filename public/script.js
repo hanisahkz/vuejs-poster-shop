@@ -11,7 +11,9 @@ new Vue({
     total: 0,
     items: [],
     cart: [],
-    search: ''
+    newSearch: 'pink',
+    lastSearch: '', 
+    loading: false
   },
   methods: {
     // Context: this method is being triggered onClick 
@@ -68,7 +70,10 @@ new Vue({
       }
     },
     onSubmit() {
-      // Interact with this endpoint: '/search/:query'
+      this.loading = true;
+      // Empty out the search result as new search is being made
+      this.items = [];
+      // Interact with this endpoint: '/search/:query' to fill up items being searched based on query made
       // this returns a Promise: https://github.com/pagekit/vue-resource/blob/develop/docs/http.md
       this.$http
         .get('/search/'.concat(this.search))
@@ -76,9 +81,14 @@ new Vue({
         // success callback
         // when queries are made, the titles and ids are obtained from imgUrl API >> and we'll be adding them to "items'"
         // this example can work because we are accessing the same JSON properties like "title", "id"
+        this.lastSearch = this.newSearch;
         this.items = response.data;
+        this.loading = false;
       }, response => {
-        // error callback
+        // error callback 
+        console.log("OK: ", response.ok);
+        console.log("Status: ", response.status);
+        console.log("Status Text: ", response.statusText);
       });
     }
   },
@@ -86,5 +96,19 @@ new Vue({
     currency(price) {
       return '$'.concat(price.toFixed(2));
     }
+  },
+  mounted: function() {
+    console.log(this);
+    console.log('Third to be executed');
+    // Calls the onSubmit function when app has mounted
+    this.onSubmit();
+  },
+  beforeCreate: () => {
+    console.log(this);
+    console.log('First to be executed');
+  },
+  created: () => {
+    console.log(this);
+    console.log('Second to be executed');
   }
 });
