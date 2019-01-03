@@ -3,7 +3,7 @@
 // 'el' is a key that specifies where in the DOM that we want to attach the Vue instance >> this is by mapping to index.html DOM >> accepts string data type
 // 'data' accepts object data type >> this is crucial as 'data' contains key(s) that will be passed to Vue and called like so {{ key_name }} in the HTML
 // configuring 'data' would allow data to be rendered in the DOM
-const price = 11.99;
+const PRICE = 11.99;
 
 new Vue({
   el: "#app",
@@ -11,15 +11,16 @@ new Vue({
     total: 0,
     items: [],
     cart: [],
-    newSearch: 'pink',
+    newSearch: 'hello',
     lastSearch: '', 
-    loading: false
+    loading: false,
+    price: PRICE
   },
   methods: {
     // Context: this method is being triggered onClick 
     addItem(index) {
       // Action 1: Accumulate the total value of item added to cart
-      this.total += price;
+      this.total += PRICE;
 
       // Action 2: Add the chosen "item object" into the cart. It shouldnt add another of the "same item" if it's already there. 
       // It should increment the quantity of that item in the cart
@@ -33,7 +34,6 @@ new Vue({
           found = true;
           this.cart[i].qtty++;
         }
-        break;
       }
 
       // Only add item to cart if it's not already there
@@ -42,22 +42,22 @@ new Vue({
           id: item.id,
           title: item.title,
           qtty: 1,
-          price: price
+          price: PRICE
         });
       }
     },
     inc(item) {
       // Increment the quantity
       item.qtty++;
-      // Increase the total price
-      this.total += price;
+      // Increase the total PRICE
+      this.total += PRICE;
     },
     dec(item) {
       // Decrement the quantity
       item.qtty--;
-      // Decrease the total price
-      this.total -= price;
-      // Handle when item quantity <= 0 (since this will also affects the price)
+      // Decrease the total PRICE
+      this.total -= PRICE;
+      // Handle when item quantity <= 0 (since this will also affects the PRICE)
       if (item.qtty <= 0) {
         for (let i = 0; i < this.cart.length; i++) {
           if (this.cart[i].id === item.id) {
@@ -102,13 +102,5 @@ new Vue({
     console.log('Third to be executed');
     // Calls the onSubmit function when app has mounted
     this.onSubmit();
-  },
-  beforeCreate: () => {
-    console.log(this);
-    console.log('First to be executed');
-  },
-  created: () => {
-    console.log(this);
-    console.log('Second to be executed');
   }
 });
